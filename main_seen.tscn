@@ -1,0 +1,87 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://walls.tscn" type="PackedScene" id=1]
+[ext_resource path="res://player.gd" type="Script" id=2]
+[ext_resource path="res://box.png" type="Texture" id=3]
+[ext_resource path="res://LIGHT.png" type="Texture" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+
+[sub_resource type="RectangleShape2D" id=2]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 109, 144 )
+
+[node name="main_seen" type="Node2D"]
+
+[node name="player" type="KinematicBody2D" parent="."]
+position = Vector2( 0, 2 )
+script = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player"]
+scale = Vector2( 0.8, 0.8 )
+shape = SubResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player/Area2D"]
+scale = Vector2( 0.9, 0.9 )
+shape = SubResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="player"]
+texture = ExtResource( 3 )
+
+[node name="resetter" type="Area2D" parent="player"]
+position = Vector2( -320, -8 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="player/resetter"]
+position = Vector2( 0, 5 )
+scale = Vector2( 0.215, 1 )
+shape = SubResource( 3 )
+
+[node name="Light2D" type="Light2D" parent="player"]
+position = Vector2( 0, -2 )
+texture = ExtResource( 4 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+zoom = Vector2( 0.5, 0.5 )
+
+[node name="walls" parent="." instance=ExtResource( 1 )]
+position = Vector2( 392, 0 )
+
+[node name="walls2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 520, 64 )
+
+[node name="walls3" parent="." instance=ExtResource( 1 )]
+position = Vector2( 664, -8 )
+
+[node name="walls4" parent="." instance=ExtResource( 1 )]
+position = Vector2( 840, 48 )
+
+[node name="walls5" parent="." instance=ExtResource( 1 )]
+position = Vector2( 1024, -22 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enable = true
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+margin_left = -64.0
+margin_top = -128.0
+margin_right = -24.0
+margin_bottom = -88.0
+
+[node name="Box" type="Sprite" parent="."]
+modulate = Color( 0.00784314, 0.109804, 0.564706, 1 )
+self_modulate = Color( 0, 0.356863, 0.815686, 1 )
+position = Vector2( 0, -8 )
+scale = Vector2( 50, 50 )
+z_index = -9
+texture = ExtResource( 3 )
+
+[connection signal="area_entered" from="player/Area2D" to="player" method="_on_Area2D_area_entered"]
+[connection signal="body_entered" from="player/Area2D" to="player" method="_on_Area2D_body_entered"]
+[connection signal="body_entered" from="player/resetter" to="player" method="_on_resetter_body_entered"]
